@@ -1,0 +1,113 @@
+{
+    "name": "Facomerc Viral Clipper (Gemini Engine)",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "viral-clipper",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ],
+            "id": "webhook-trigger",
+            "name": "Webhook (Receive URL)"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "prompt-assignment",
+                            "name": "prompt",
+                            "value": "Analyze this video URL and identify 3 viral short segments. Video: {{ $json.body.url }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                450,
+                300
+            ],
+            "id": "format-prompt",
+            "name": "Format Input"
+        },
+        {
+            "parameters": {
+                "model": "gemini-1.5-pro",
+                "prompt": "={{ $json.prompt }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleGemini",
+            "typeVersion": 1,
+            "position": [
+                650,
+                300
+            ],
+            "id": "gemini-analysis",
+            "name": "Gemini 1.5 Pro (Viral Analysis)",
+            "credentials": {
+                "googleGeminiApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Google Gemini account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "options": {}
+            },
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                850,
+                300
+            ],
+            "id": "respond-to-frontend",
+            "name": "Return Clips"
+        }
+    ],
+    "connections": {
+        "Webhook (Receive URL)": {
+            "main": [
+                [
+                    {
+                        "node": "Format Input",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Format Input": {
+            "main": [
+                [
+                    {
+                        "node": "Gemini 1.5 Pro (Viral Analysis)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Gemini 1.5 Pro (Viral Analysis)": {
+            "main": [
+                [
+                    {
+                        "node": "Return Clips",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
