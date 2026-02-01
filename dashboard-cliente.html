@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facomerc AI | Portal de Cliente</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        facomerc: {
+                            orange: '#FF3B00',
+                            dark: '#0A0A0A',
+                            gray: '#1E1E1E',
+                            light: '#F5F5F5'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0A0A0A;
+            color: #FFFFFF;
+        }
+
+        .glass {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .active-nav {
+            border-left: 3px solid #FF3B00;
+            background: linear-gradient(90deg, rgba(255, 59, 0, 0.1) 0%, transparent 100%);
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#0F0F0F] border-r border-gray-800 flex flex-col hidden md:flex">
+        <div class="p-6 flex items-center gap-3">
+            <div class="w-8 h-8 bg-facomerc-orange rounded-lg flex items-center justify-center">
+                <i data-lucide="zap" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="font-bold text-xl tracking-tight">Facomerc<span class="text-facomerc-orange">AI</span></span>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <button onclick="switchTab('resumen')" id="nav-resumen"
+                class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 active-nav flex items-center gap-3 transition-all text-gray-300 hover:text-white">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Resumen
+            </button>
+            <button onclick="switchTab('proyecto')" id="nav-proyecto"
+                class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 flex items-center gap-3 transition-all text-gray-300 hover:text-white">
+                <i data-lucide="rocket" class="w-5 h-5"></i> Mi Proyecto
+            </button>
+            <button onclick="switchTab('materiales')" id="nav-materiales"
+                class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 flex items-center gap-3 transition-all text-gray-300 hover:text-white">
+                <i data-lucide="folder-open" class="w-5 h-5"></i> Materiales
+                <span
+                    class="ml-auto bg-facomerc-orange/20 text-facomerc-orange text-xs px-2 py-0.5 rounded-full">2</span>
+            </button>
+            <button onclick="switchTab('chat')" id="nav-chat"
+                class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 flex items-center gap-3 transition-all text-gray-300 hover:text-white">
+                <i data-lucide="message-square" class="w-5 h-5"></i> Chat / Soporte
+            </button>
+            <button onclick="switchTab('documentos')" id="nav-documentos"
+                class="w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 flex items-center gap-3 transition-all text-gray-300 hover:text-white">
+                <i data-lucide="file-text" class="w-5 h-5"></i> Documentos
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-gray-800">
+            <button
+                class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all">
+                <div
+                    class="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex items-center justify-center font-bold text-white text-xs">
+                    PA</div>
+                <div class="text-sm text-left">
+                    <div class="font-medium text-white">Patricio A.</div>
+                    <div class="text-xs">Cliente Starter</div>
+                </div>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div
+        class="md:hidden fixed top-0 w-full bg-[#0F0F0F] border-b border-gray-800 z-50 p-4 flex justify-between items-center">
+        <span class="font-bold text-lg">Facomerc<span class="text-facomerc-orange">AI</span></span>
+        <button class="p-2"><i data-lucide="menu" class="text-white"></i></button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 pt-20 md:pt-8 relative">
+
+        <!-- Tab: RESUMEN -->
+        <div id="tab-resumen" class="space-y-6 animate-fade-in">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Hola, Patricio 👋</h1>
+                <p class="text-gray-400">Aquí está el estado actual de tu proyecto <span
+                        class="text-white font-medium">"Ecommerce Automático"</span>.</p>
+            </header>
+
+            <!-- Status Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Time -->
+                <div class="glass p-6 rounded-2xl relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 w-24 h-24 bg-facomerc-orange/10 rounded-bl-full -mr-4 -mt-4 transition-all group-hover:bg-facomerc-orange/20">
+                    </div>
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <p class="text-sm text-gray-400 font-medium">Tiempo Restante</p>
+                            <h3 class="text-2xl font-bold mt-1">12 Días</h3>
+                        </div>
+                        <div class="bg-blue-500/20 p-2 rounded-lg text-blue-400"><i data-lucide="clock"
+                                class="w-5 h-5"></i></div>
+                    </div>
+                    <div class="w-full bg-gray-800 h-1.5 rounded-full mt-2">
+                        <div class="bg-blue-500 h-1.5 rounded-full" style="width: 40%"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Phase -->
+                <div class="glass p-6 rounded-2xl relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 w-24 h-24 bg-green-500/10 rounded-bl-full -mr-4 -mt-4 transition-all group-hover:bg-green-500/20">
+                    </div>
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <p class="text-sm text-gray-400 font-medium">Fase Actual</p>
+                            <h3 class="text-2xl font-bold mt-1">2. Desarrollo</h3>
+                        </div>
+                        <div class="bg-green-500/20 p-2 rounded-lg text-green-400"><i data-lucide="code"
+                                class="w-5 h-5"></i></div>
+                    </div>
+                    <p class="text-xs text-green-400 mt-2 flex items-center gap-1"><i data-lucide="check-circle"
+                            class="w-3 h-3"></i> En progreso</p>
+                </div>
+
+                <!-- Card 3: Action Required -->
+                <div class="glass p-6 rounded-2xl relative overflow-hidden border-facomerc-orange/50 group cursor-pointer hover:border-facomerc-orange transition-all"
+                    onclick="switchTab('materiales')">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-facomerc-orange/10 rounded-bl-full -mr-4 -mt-4">
+                    </div>
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <p class="text-sm text-gray-400 font-medium">Acción Requerida</p>
+                            <h3 class="text-2xl font-bold mt-1 text-facomerc-orange">2 Pendientes</h3>
+                        </div>
+                        <div class="bg-facomerc-orange/20 p-2 rounded-lg text-facomerc-orange animate-pulse"><i
+                                data-lucide="alert-circle" class="w-5 h-5"></i></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2">Entregar Logo y Textos para continuar.</p>
+                </div>
+            </div>
+
+            <!-- Warning Banner -->
+            <div class="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-xl flex items-start gap-3">
+                <i data-lucide="alert-triangle" class="text-yellow-500 shrink-0 mt-0.5"></i>
+                <div>
+                    <h4 class="font-bold text-yellow-500 text-sm">Importante: El contador se detiene</h4>
+                    <p class="text-xs text-yellow-100/80 mt-1">El tiempo de entrega de 15 días hábiles comenzará a
+                        contar oficialmente <span class="underline">después</span> de que hayas entregado todos los
+                        materiales requeridos en la sección "Materiales".</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: PROYECTO (Timeline) -->
+        <div id="tab-proyecto" class="hidden animate-fade-in max-w-3xl">
+            <h2 class="text-2xl font-bold mb-6">Línea de Tiempo del Proyecto</h2>
+            <div class="relative border-l border-gray-800 ml-3 space-y-8 pb-8">
+
+                <!-- Step 1: Done -->
+                <div class="ml-6 relative">
+                    <div
+                        class="absolute -left-[35px] bg-green-500 w-8 h-8 rounded-full flex items-center justify-center border-4 border-[#0A0A0A]">
+                        <i data-lucide="check" class="w-4 h-4 text-black font-bold"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-green-500">1. Onboarding & Kickoff</h3>
+                    <p class="text-sm text-gray-500 mb-2">Completado el 10 Ene, 2026</p>
+                    <div class="glass p-4 rounded-xl border-green-500/20">
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex gap-2"><i data-lucide="check-square" class="w-4 h-4 text-green-500"></i>
+                                Pago inicial recibido</li>
+                            <li class="flex gap-2"><i data-lucide="check-square" class="w-4 h-4 text-green-500"></i>
+                                Formulario completado</li>
+                            <li class="flex gap-2"><i data-lucide="check-square" class="w-4 h-4 text-green-500"></i>
+                                Acceso a Dashboard</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 2: Current -->
+                <div class="ml-6 relative">
+                    <div
+                        class="absolute -left-[35px] bg-facomerc-orange w-8 h-8 rounded-full flex items-center justify-center border-4 border-[#0A0A0A] shadow-[0_0_15px_rgba(255,59,0,0.5)]">
+                        <i data-lucide="loader" class="w-4 h-4 text-white animate-spin"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">2. Recopilación & Estructura</h3>
+                    <p class="text-sm text-facomerc-orange mb-2">En progreso - Esperando Cliente</p>
+                    <div class="glass p-4 rounded-xl border-facomerc-orange/30 bg-facomerc-orange/5">
+                        <p class="text-sm text-gray-300 mb-3">Estamos esperando tus archivos para comenzar a diseñar la
+                            maqueta.</p>
+                        <button onclick="switchTab('materiales')"
+                            class="text-xs bg-facomerc-orange hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Ir a subir materiales →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Pending -->
+                <div class="ml-6 relative opacity-50">
+                    <div
+                        class="absolute -left-[35px] bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center border-4 border-[#0A0A0A]">
+                        <span class="text-xs text-gray-400">3</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-400">3. Diseño & Desarrollo</h3>
+                    <p class="text-sm text-gray-600">Pendiente</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: MATERIALES -->
+        <div id="tab-materiales" class="hidden animate-fade-in">
+            <header class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Entrega de Materiales</h2>
+                <div class="text-right">
+                    <p class="text-xs text-gray-400">Progreso</p>
+                    <p class="text-xl font-bold text-facomerc-orange">33%</p>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 gap-4">
+                <!-- Item Completed -->
+                <div class="glass p-4 rounded-xl flex items-center justify-between border-green-500/20">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-500">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-200 line-through decoration-gray-500">Brandbook / Manual de
+                                Marca</h4>
+                            <p class="text-xs text-green-500">Recibido</p>
+                        </div>
+                    </div>
+                    <button
+                        class="text-xs text-gray-500 hover:text-white px-3 py-1 rounded border border-gray-700">Ver</button>
+                </div>
+
+                <!-- Item Pending 1 -->
+                <div
+                    class="glass p-4 rounded-xl flex items-center justify-between border-facomerc-orange/40 bg-facomerc-orange/5">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-facomerc-orange/20 flex items-center justify-center text-facomerc-orange">
+                            <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">Logotipo (Alta Calidad)</h4>
+                            <p class="text-xs text-facomerc-orange">Requerido: .PNG, .SVG o .AI</p>
+                        </div>
+                    </div>
+                    <button
+                        class="text-xs bg-white text-black font-bold hover:bg-gray-200 px-4 py-2 rounded">Subir</button>
+                </div>
+
+                <!-- Item Pending 2 -->
+                <div
+                    class="glass p-4 rounded-xl flex items-center justify-between border-facomerc-orange/40 bg-facomerc-orange/5">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-facomerc-orange/20 flex items-center justify-center text-facomerc-orange">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white">Textos "Sobre Nosotros"</h4>
+                            <p class="text-xs text-facomerc-orange">Requerido: Doc Word o PDF</p>
+                        </div>
+                    </div>
+                    <button
+                        class="text-xs bg-white text-black font-bold hover:bg-gray-200 px-4 py-2 rounded">Subir</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: CHAT -->
+        <div id="tab-chat" class="hidden h-full flex flex-col">
+            <div class="glass border-gray-800 rounded-2xl flex-1 flex flex-col overflow-hidden h-[calc(100vh-140px)]">
+                <!-- Chat Header -->
+                <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-[#0F0F0F]">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+                                <i data-lucide="bot" class="w-6 h-6 text-white"></i>
+                            </div>
+                            <div
+                                class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0F0F0F]">
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm">Facomerc Support AI</h4>
+                            <p class="text-xs text-gray-400">Responde al instante • Multilenguaje 🌐</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="openUrgentModal()"
+                            class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 text-xs font-bold rounded-lg border border-red-500/50 flex items-center gap-2 transition-all">
+                            <i data-lucide="alert-octagon" class="w-3 h-3"></i> URGENTE
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="flex-1 p-4 overflow-y-auto space-y-4 bg-[#0A0A0A]" id="chat-messages">
+                    <!-- Bot Msg -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg rounded-tl-none p-3 max-w-[80%] text-sm text-gray-200">
+                            Hola Patricio! 👋 Soy el asistente virtual de tu proyecto. ¿En qué puedo ayudarte hoy?
+                        </div>
+                    </div>
+                    <!-- User Msg -->
+                    <div class="flex items-start gap-3 flex-row-reverse">
+                        <div
+                            class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                            PA</div>
+                        <div class="bg-facomerc-orange text-white rounded-lg rounded-tr-none p-3 max-w-[80%] text-sm">
+                            ¿Cuánto falta para la entrega?
+                        </div>
+                    </div>
+                    <!-- Bot Msg -->
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="bot" class="w-4 h-4"></i>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg rounded-tl-none p-3 max-w-[80%] text-sm text-gray-200">
+                            Según mi cronómetro, faltan **12 días** para la fecha estimada. Sin embargo, recuerda que
+                            necesitamos tu logo antes del Viernes para mantener esta fecha.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="p-4 border-t border-gray-800 bg-[#0F0F0F]">
+                    <div class="relative">
+                        <input type="text" placeholder="Escribe tu mensaje..."
+                            class="w-full bg-gray-900 border border-gray-700 rounded-lg pl-4 pr-12 py-3 text-sm focus:outline-none focus:border-facomerc-orange text-white">
+                        <button
+                            class="absolute right-2 top-2 p-1.5 bg-facomerc-orange rounded-md text-white hover:bg-orange-600 transition-colors">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="mt-2 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                        <button
+                            class="whitespace-nowrap px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded-full text-xs text-gray-300 border border-gray-700">📅
+                            ¿Cuándo terminan?</button>
+                        <button
+                            class="whitespace-nowrap px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded-full text-xs text-gray-300 border border-gray-700">✏️
+                            Quiero un cambio</button>
+                        <button onclick="requestHuman()"
+                            class="whitespace-nowrap px-3 py-1 bg-blue-900/30 hover:bg-blue-900/50 text-blue-400 border border-blue-900 rounded-full text-xs">👤
+                            Hablar con humano</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- URGENT MODAL -->
+    <div id="urgent-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+        <div
+            class="bg-[#1E1E1E] border border-red-500 rounded-2xl max-w-md w-full p-6 shadow-[0_0_50px_rgba(220,38,38,0.2)] animate-scale-in">
+            <div class="text-center mb-6">
+                <div
+                    class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                    <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">¿Es una Emergencia Real?</h3>
+                <p class="text-sm text-gray-400 mt-2">Usar este botón enviará una alerta de <span
+                        class="text-red-400 font-bold">ALTA PRIORIDAD</span> a los dispositivos personales de nuestros
+                    ingenieros (Pushover 24/7).</p>
+            </div>
+
+            <form class="space-y-4">
+                <div>
+                    <label class="text-xs uppercase text-gray-500 font-bold">Describe el problema</label>
+                    <textarea
+                        class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 mt-1 text-sm text-white focus:border-red-500 focus:outline-none"
+                        rows="3" placeholder="Ej: Mi sitio web está caído..."></textarea>
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeUrgentModal()"
+                        class="flex-1 px-4 py-3 rounded-lg bg-gray-800 text-white font-medium hover:bg-gray-700">Cancelar</button>
+                    <button type="button"
+                        class="flex-1 px-4 py-3 rounded-lg bg-red-600 text-white font-bold hover:bg-red-700 flex items-center justify-center gap-2">
+                        <i data-lucide="bell" class="w-4 h-4"></i> ACTIVAR ALERTA
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN (Cambiar por tu URL real de n8n)
+        const N8N_BASE_URL = "https://n8n.srv1233890.hstgr.cloud/webhook/dashboard";
+
+        // Initial Data Fetch
+        async function loadDashboardData() {
+            try {
+                // Uncomment when connected to real n8n
+                /*
+                const response = await fetch(`${N8N_BASE_URL}-status`, { method: 'POST' });
+                const data = await response.json();
+                
+                // Update UI with real data
+                document.querySelector('.text-2xl.font-bold.mt-1').innerText = `${data.days_left} Días`;
+                // ... map other fields
+                */
+                console.log("Dashboard loaded - Connected to n8n");
+            } catch (e) {
+                console.error("Error loading data", e);
+            }
+        }
+
+        // Init Icons
+        lucide.createIcons();
+        loadDashboardData();
+
+        // Simple Tab Switching Logic
+        function switchTab(tabName) {
+            // Hide all tabs
+            ['resumen', 'proyecto', 'materiales', 'chat', 'documentos'].forEach(t => {
+                document.getElementById('tab-' + t)?.classList.add('hidden');
+                document.getElementById('nav-' + t)?.classList.remove('active-nav', 'bg-white/5', 'text-white');
+                document.getElementById('nav-' + t)?.classList.add('text-gray-300');
+            });
+
+            // Show selected tab
+            const tab = document.getElementById('tab-' + tabName);
+            if (tab) tab.classList.remove('hidden');
+
+            // Activate Tab Style
+            const nav = document.getElementById('nav-' + tabName);
+            if (nav) {
+                nav.classList.add('active-nav', 'bg-white/5', 'text-white');
+                nav.classList.remove('text-gray-300');
+            }
+        }
+
+        // Modal Logic
+        function openUrgentModal() {
+            document.getElementById('urgent-modal').classList.remove('hidden');
+            document.getElementById('urgent-modal').classList.add('flex');
+        }
+
+        function closeUrgentModal() {
+            document.getElementById('urgent-modal').classList.add('hidden');
+            document.getElementById('urgent-modal').classList.remove('flex');
+        }
+
+        async function requestHuman() {
+            const btn = event.currentTarget;
+            const originalText = btn.innerText;
+            btn.innerText = "⏳ Conectando...";
+
+            try {
+                // Real call to n8n
+                /*
+                await fetch(`${N8N_BASE_URL}-chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        client_name: "Patricio A.",
+                        message: "Solicitud de Agente Humano",
+                        urgent: true
+                    })
+                });
+                */
+
+                setTimeout(() => {
+                    alert("✅ Un agente humano ha sido notificado en su móvil.");
+                    btn.innerText = originalText;
+                }, 1000);
+
+            } catch (e) {
+                alert("Error de conexión. Intenta de nuevo.");
+                btn.innerText = originalText;
+            }
+        }
+
+        // Init Default Tab
+        switchTab('resumen');
+    </script>
+</body>
+
+</html>
